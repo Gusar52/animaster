@@ -1,17 +1,31 @@
 addListeners();
 
 function addListeners() {
+    let resetFadeInPlay;
     document.getElementById('fadeInPlay')
         .addEventListener('click', function () {
             const block = document.getElementById('fadeInBlock');
-            animaster().fadeIn(block, 5000);
+            resetFadeInPlay = animaster().fadeIn(block, 5000);
         });
 
+    document.getElementById('fadeInReset')
+        .addEventListener('click', function () {
+            const block = document.getElementById('fadeInBlock');
+            resetFadeInPlay.reset(block);
+        });    
+
+    let resetFadeOutPlay;
     document.getElementById('fadeOutPlay')
         .addEventListener('click', function () {
             const block = document.getElementById('fadeOutBlock');
-            animaster().fadeOut(block, 1000);
+            resetFadeOutPlay = animaster().fadeOut(block, 1000);
         });
+
+    document.getElementById('fadeOutReset')
+        .addEventListener('click', function () {
+            const block = document.getElementById('fadeOutBlock');
+            resetFadeOutPlay.reset(block);
+        });     
 
     document.getElementById('movePlay')
         .addEventListener('click', function () {
@@ -95,16 +109,22 @@ function animaster(){
         element.style.transitionDuration =  `${duration}ms`;
         element.classList.remove('hide');
         element.classList.add('show');
+        return {reset: function(element) {
+                resetFadeIn(element);
+            }};
     }
     function resetFadeIn(element) {
-        element.style.transitionDuration =  null;
-        element.classList.remove('hide');
-        element.classList.add('show');
+        element.style.transitionDuration = null;
+        element.classList.add('hide');
+        element.classList.remove('show');
     }
     function fadeOut(element, duration) {
         element.style.transitionDuration = `${duration}ms`;
         element.classList.remove('show');
         element.classList.add('hide');
+        return {reset: function(element) {
+                resetFadeOut(element);
+            }};
     }
     function resetFadeOut(element) {
         element.style.transitionDuration =  null;
