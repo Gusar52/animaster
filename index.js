@@ -105,6 +105,11 @@ function animaster(){
     function moveAndHide(element, duration) {
         move(element, 0.4*duration, {x: 100, y:20});
         fadeOut(element, 0.6*duration);
+        return {
+            reset: function () {
+                element.style.transform = getTransform({x:0,y:0}, null);
+            }
+        }
     }
 
     function showAndHide(element, duration) {
@@ -138,13 +143,16 @@ function animaster(){
         }
     }
 
+
+
     return {
-        move : move,
-        fadeIn: fadeIn,
-        scale: scale,
-        fadeOut: fadeOut,
-        moveAndHide: moveAndHide,
-        showAndHide: showAndHide,
+        move,
+        fadeIn,
+        scale,
+        fadeOut,
+        moveAndHide,
+        showAndHide,
         heartBeating,
     }
+
 }
