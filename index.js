@@ -10,7 +10,7 @@ function addListeners() {
     document.getElementById('fadeOutPlay')
         .addEventListener('click', function () {
             const block = document.getElementById('fadeOutBlock');
-            animaster().findOut(block, 1000);
+            animaster().fadeOut(block, 1000);
         });
 
     document.getElementById('movePlay')
@@ -24,6 +24,25 @@ function addListeners() {
             const block = document.getElementById('scaleBlock');
             animaster().scale(block, 1000, 1.25);
         });
+
+    // 3 new
+    document.getElementById('moveAndHidePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('moveAndHideBlock');
+            animaster().moveAndHide(block, 1000);
+        });
+        
+    document.getElementById('showAndHidePlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('showAndHideBlock');
+            animaster().showAndHide(block, 999);
+        });
+        
+    document.getElementById('heartBeatingPlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('heartBeatingBlock');
+            animaster().scale(block, 1000, 1.25);
+        });    
 
 }
 
@@ -62,7 +81,7 @@ function animaster(){
         element.classList.remove('hide');
         element.classList.add('show');
     }
-    function findOut(element, duration) {
+    function fadeOut(element, duration) {
         element.style.transitionDuration = `${duration}ms`;
         element.classList.remove('show');
         element.classList.add('hide');
@@ -79,12 +98,38 @@ function animaster(){
         element.style.transform = getTransform(null, ratio);
     }
 
+    function moveAndHide(element, duration) {
+        move(element, 0.4*duration, {x: 100, y:20});
+        fadeOut(element, 0.6*duration);
+    }
+
+    function showAndHide(element, duration) {
+        let flag = true;
+        setInterval( () => {
+            if (flag){
+                fadeIn(element, duration/3);
+            }
+            else{
+                fadeOut(element, duration/3);
+                return;
+            }
+            flag = !flag;
+        }, duration/3)
+    }
+
+    function heartBeating(element, duration, ratio) {
+        element.style.transitionDuration =  `${duration}ms`;
+        element.style.transform = getTransform(null, ratio);
+    }
+
 
 
     return {
         move : move,
         fadeIn: fadeIn,
         scale: scale,
-        findOut: findOut,
+        fadeOut: fadeOut,
+        moveAndHide: moveAndHide,
+        showAndHide: showAndHide
     }
 }
