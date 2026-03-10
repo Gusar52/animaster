@@ -25,10 +25,18 @@ function addListeners() {
             animaster().scale(block, 1000, 1.25);
         });
 
+    let moveAndHideAnimation;
     document.getElementById('moveAndHidePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveAndHideBlock');
-            animaster().moveAndHide(block, 1000);
+            moveAndHideAnimation = animaster().moveAndHide(block, 1000);
+        });
+
+    document.getElementById('moveAndHideReset')
+        .addEventListener('click', function () {
+            if (moveAndHideAnimation) {
+                moveAndHideAnimation.reset();
+            }
         });
 
     document.getElementById('showAndHidePlay')
@@ -116,44 +124,59 @@ function animaster(){
     }
 
     function moveAndHide(element, duration) {
-        move(element, 0.4*duration, {x: 100, y:20});
-        fadeOut(element, 0.6*duration);
+        let active = true;
+
+        setTimeout(() => {
+            if (active) move(element, 0.4 * duration, {x: 100, y: 20});
+        }, 0);
+
+        setTimeout(() => {
+            if (active) fadeOut(element, 0.6 * duration);
+        }, 0.4 * duration);
+
         return {
-            reset: function () {
-                element.style.transform = getTransform({x:0,y:0}, null);
+            reset: function() {
+                active = false;
+                element.style.transform = getTransform({x: 0, y: 0}, null);
+                element.classList.add('show');
+                element.classList.remove('hide');
+                element.style.transitionDuration = '0ms';
             }
-        }
+        };
     }
 
     function showAndHide(element, duration) {
+        element.classList.remove('hide');
+        element.classList.add('show');
+
         fadeIn(element, duration/2);
+
         setTimeout(() => {
             fadeOut(element, duration/2);
         }, duration/2);
     }
 
-    function heartBeating (element)
-    {
+    function heartBeating(element) {
         let growing = true;
+        let intervalId;
 
-        setInterval(() => {
-            if (growing === 'stop'){
-                return;
-            }
-            else if (growing) {
+        intervalId = setInterval(() => {
+            if (growing) {
                 element.style.transform = getTransform(null, 1.4);
-            } else{
+            } else {
                 element.style.transform = getTransform(null, 1);
             }
             growing = !growing;
         }, 500);
 
-        element.style.transitionDuration = `${500}ms`;
+        element.style.transitionDuration = '500ms';
+
         return {
-            stop: () => {
-                growing = 'stop';
+            stop: function() {
+                clearInterval(intervalId);
+                element.style.transform = getTransform(null, 1);
             }
-        }
+        };
     }
 
 
