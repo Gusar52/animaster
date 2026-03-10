@@ -74,6 +74,9 @@ function animaster(){
         element.style.transitionDuration = `${duration}ms`;
         element.style.transform = getTransform(translation, null);
     }
+    function resetMoveAndScale(element) {
+        element.style.transitionDuration =  null;
+    }
 
     /**
      * Блок плавно появляется из прозрачного.
@@ -85,10 +88,20 @@ function animaster(){
         element.classList.remove('hide');
         element.classList.add('show');
     }
+    function resetFadeIn(element) {
+        element.style.transitionDuration =  null;
+        element.classList.remove('hide');
+        element.classList.add('show');
+    }
     function fadeOut(element, duration) {
         element.style.transitionDuration = `${duration}ms`;
         element.classList.remove('show');
         element.classList.add('hide');
+    }
+    function resetFadeOut(element) {
+        element.style.transitionDuration =  null;
+        element.classList.remove('hide');
+        element.classList.add('show');
     }
 
     /**
@@ -146,5 +159,8 @@ function animaster(){
         moveAndHide: moveAndHide,
         showAndHide: showAndHide,
         heartBeating,
+        resetFadeIn,
+        resetMoveAndScale,
+        resetFadeOut
     }
 }
