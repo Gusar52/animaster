@@ -7,6 +7,12 @@ function addListeners() {
             animaster().fadeIn(block, 5000);
         });
 
+    document.getElementById('fadeOutPlay')
+        .addEventListener('click', function () {
+            const block = document.getElementById('fadeOutBlock');
+            animaster().findOut(block, 1000);
+        });
+
     document.getElementById('movePlay')
         .addEventListener('click', function () {
             const block = document.getElementById('moveBlock');
@@ -18,11 +24,7 @@ function addListeners() {
             const block = document.getElementById('scaleBlock');
             animaster().scale(block, 1000, 1.25);
         });
-    document.getElementById('findOutPlay')
-        .addEventListener('click', function () {
-            const block = document.getElementById('findOutBlock');
-            animaster().findOut(block, 1000, {x: 100, y: 10});
-        });
+
 }
 
 
@@ -60,6 +62,11 @@ function animaster(){
         element.classList.remove('hide');
         element.classList.add('show');
     }
+    function findOut(element, duration) {
+        element.style.transitionDuration = `${duration}ms`;
+        element.classList.remove('show');
+        element.classList.add('hide');
+    }
 
     /**
      * Функция, увеличивающая/уменьшающая элемент
@@ -72,11 +79,7 @@ function animaster(){
         element.style.transform = getTransform(null, ratio);
     }
 
-    function findOut(element, duration) {
-        element.style.transitionDuration = `${duration}ms`;
-        element.classList.remove('show');
-        element.classList.add('hide');
-    }
+
 
     return {
         move : move,
